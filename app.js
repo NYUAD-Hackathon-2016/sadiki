@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
+var sendTextMessage = require('./send-text-message')
 var app = express();
 
 app.set('port', (process.env.PORT || 5000));
@@ -22,6 +23,19 @@ app.get('/webhook/', function (req, res) {
       res.send(req.query['hub.challenge']);
     }
     res.send('Error, wrong token')
+});
+
+app.post('/webhook/', function (req, res) {
+    messaging_events = req.body.entry[0].messaging
+    for (i = 0; i < messaging_events.length; i++) {
+        event = req.body.entry[0].messaging[i]
+        sender = event.sender.id
+        if (event.message && event.message.text) {
+          text = event.message.text
+          sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+        }
+    }
+    res.sendStatus(200)
 });
 
 // Spin up the server
