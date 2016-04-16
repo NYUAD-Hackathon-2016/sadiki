@@ -2,8 +2,11 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
 var sendTextMessage = require('./send-text-message');
+var mongoose = require('mongoose');
 var chatHistory = require('./chat-history');
 var app = express();
+
+mongoose.connect('mongodb://localhost/sadiki');
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -43,3 +46,7 @@ app.post('/webhook/', function (req, res) {
 app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'));
 });
+
+// Testing your database connection.
+var test = new chatHistory({user_id: 1, locale: 'en'})
+test.save();
