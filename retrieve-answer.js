@@ -1,7 +1,7 @@
 var questions = require('./questions');
 var _ = require('underscore');
 
-module.exports = function retrieveAnswer(sender, topics, callback) {
+module.exports = function retrieveAnswer(sender, topics) {
   questions.find({topic: { $in: topics }}, function (err, results) {
     if (err) return;
 

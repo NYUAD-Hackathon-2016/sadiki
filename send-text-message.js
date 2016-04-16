@@ -2,7 +2,7 @@ var request = require('request');
 var token = require('./facebook-token');
 var app = require('express')();
 
-module.exports = function sendTextMessage(sender, text) {
+module.exports = function sendTextMessage(sender, text, res) {
   // We should get the answer here.
   messageData = {
     text: text

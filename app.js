@@ -43,10 +43,10 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
           text = event.message.text;
           // var topics = analyzeText(text);
-          var topics = ['sim-card', 'mobile'];
+          var topics = text.split(' ');
           retrieveAnswer(sender, topics, function(answer) {
             logInteraction({question: event.message.text, user_id: event.sender.id, answer: answer});
-            sendTextMessage(sender, answer);
+            sendTextMessage(sender, answer, res);
           });
         }
     }
