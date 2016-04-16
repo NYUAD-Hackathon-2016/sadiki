@@ -260,7 +260,7 @@
     </div>
 
       <label id="volunteer-container" style="display: none;">
-        <input type="checkbox" id="volunteer">
+        <input type="checkbox" id="guidance">
         <span class="label-body">Would you be willing to offer guidance to incoming refugees who have questions?</span>
       </label>
        <div id="volunteer-form" style="display: none;">
@@ -297,10 +297,10 @@
   // Show/Hide volunteer information form.
   $(document).ready(function () {
 console.log('ready');
-    $('#volunteer').click(function () {
+    $('#guidance').change(function () {
 console.log('checkbox changed');
       var $form = $('#volunteer-form');
-      if ($(this).is(':checked')) {
+      if ($(this).prop('checked')) {
 console.log('checkbox checked');
         $form.show();
         $form.find('input').prop('required', true);
