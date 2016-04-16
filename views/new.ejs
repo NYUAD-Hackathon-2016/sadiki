@@ -21,12 +21,40 @@
         <option selected="selected">-- Select One --</option>
         <option value="refugee">Refugee</option>
         <option value="ngo">NGO</option>
-        <option value="ngo">Volunteer</option>
+        <option value="volunteer">Volunteer</option>
       </select>
     </div>
 
     <!-- Refugee Form -->
     <div class="specific-form" id="refugee" style="display: none;">
+      <div class="row">
+        <div class="one-half column">
+          <label for="volunteer[name]">Name</label>
+          <input class="u-full-width" type="text" id="volunteer[name]" name="volunteer[name]"/>
+        </div>
+        <div class="one-half column">
+          <label for="volunteer[address]">Address</label>
+          <input class="u-full-width" type="text" id="volunteer[address]" name="volunteer[address]"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="one-half column">
+          <label for="volunteer[phone]">Phone number</label>
+          <input class="u-full-width" type="text" id="volunteer[phone]" name="volunteer[phone]"/>
+        </div>
+        <div class="one-half column">
+          <label for="volunteer[country]">What country are you located in?</label>
+          <input class="u-full-width" type="text" id="volunteer[country]" name="volunteer[country]"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="one-half column">
+          <label for="volunteer[city]">What city are you located in?</label>
+          <input class="u-full-width" type="text" id="volunteer[city]" name="volunteer[city]"/>
+        </div>
+      </div>
+
+      <!-- Specific refugee questions -->
       <div class="row">
         <label for="questions[0]">Where do you go to learn the local language?</label>
         <input type="hidden" value="Where do you go to learn the local language?" name="questions[0][question]">
@@ -155,6 +183,8 @@
             <span class="label-body">Cultural tours/immersion</span>
           </label>
         </div>
+      </div>
+      <div class="row">
         <div class="one-third column">
           <label>
             <input type="checkbox" name="topic[other]">
@@ -164,19 +194,48 @@
       </div>
     </div>
 
-    <label id="volunteer-container" style="display: none;">
-      <input type="checkbox" id="volunteer">
-      <span class="label-body">Would you be willing to offer guidance to incoming refugees who have questions?</span>
-    </label>
-    <div id="volunteer-form" style="display: none;">
+    <div class="specific-form" id="volunteer" style="display: none;">
       <div class="row">
-        <label for="volunteer-name">What is your first name?</label>
-        <input type="text" id="volunteer-name" name="volunteer-name"/>
+        <div class="one-half column">
+          <label for="volunteer[name]">Name</label>
+          <input class="u-full-width" type="text" id="volunteer[name]" name="volunteer[name]"/>
+        </div>
+        <div class="one-half column">
+          <label for="volunteer[address]">Address</label>
+          <input class="u-full-width" type="text" id="volunteer[address]" name="volunteer[address]"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="one-half column">
+          <label for="volunteer[phone]">Phone number</label>
+          <input class="u-full-width" type="text" id="volunteer[phone]" name="volunteer[phone]"/>
+        </div>
+        <div class="one-half column">
+          <label for="volunteer[country]">What country are you located in?</label>
+          <input class="u-full-width" type="text" id="volunteer[country]" name="volunteer[country]"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="one-half column">
+          <label for="volunteer[city]">What city are you located in?</label>
+          <input class="u-full-width" type="text" id="volunteer[city]" name="volunteer[city]"/>
+        </div>
       </div>
 
-      <div class="row">
-        <label for="volunteer-phone">What is your phone number?</label>
-        <input type="text" id="volunteer-phone" name="volunteer-phone"/>
+      <label id="volunteer-container" style="display: none;">
+        <input type="checkbox" id="volunteer">
+        <span class="label-body">Would you be willing to offer guidance to incoming refugees who have questions?</span>
+      </label>
+      <div id="volunteer-form" style="display: none;">
+        <div class="row">
+          <label for="volunteer-name">What is your first name?</label>
+          <input type="text" id="volunteer-name" name="volunteer-name"/>
+        </div>
+
+        <div class="row">
+          <label for="volunteer-phone">What is your phone number?</label>
+          <input type="text" id="volunteer-phone" name="volunteer-phone"/>
+        </div>
       </div>
     </div>
 
