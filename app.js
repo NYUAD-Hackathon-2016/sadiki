@@ -7,8 +7,8 @@ var mongoose = require('mongoose');
 var chatHistory = require('./chat-history');
 var app = express();
 
-// mongoose.connect('mongodb://localhost/sadiki');
-mongoose.connect('mongodb://sadiki:sadiki@ds011251.mlab.com:11251/heroku_r5lph6kn');
+mongoose.connect('mongodb://localhost/sadiki');
+// mongoose.connect('mongodb://sadiki:sadiki@ds011251.mlab.com:11251/heroku_r5lph6kn');
 
 app.set('port', (process.env.PORT || 5000));
 
