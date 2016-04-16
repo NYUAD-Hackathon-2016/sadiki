@@ -9,7 +9,7 @@ var questionsSchema = mongoose.Schema({
 
 var model = mongoose.model('Questions', questionsSchema);
 
-new model({locale: 'en', question: 'noanswer', topic: ['noanswer'], answer: 'I\'m not sure what you are trying to say.'}).save();
+new model({locale: 'en', question: 'noanswer', topic: ['noanswer'], answer: 'I\'m not sure I can help you with that, if you need further help you can contact:'}).save();
 new model({locale: 'en', question: 'Salam', topic: ['salam'], answer: 'salam'}).save();
 new model({locale: 'en', question: 'سلام', topic: ['سلام'], answer: 'سلام'}).save();
 new model({locale: 'en', question: 'Can i sign my kids to school?', topic: ['kids', 'school', 'sign'], answer: 'Yes you can, but they have to speak turkish.'}).save();
