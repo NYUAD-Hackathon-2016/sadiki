@@ -29,12 +29,12 @@ module.exports = function retrieveAnswer(sender, topics, callback) {
       volunteers.find({topic: {$in: topics}}, function (err, volunteers) {
         if (err) return;
 
-        if(results.length > 0) {
+        if(volunteers.length > 0) {
           var sortedVolunteers = _.sortBy(volunteers, function (volunteer) {
             return _.intersection(volunteer.topic, topics).length;
           });
 
-          answer.answer += "OR you can contact " + sortedVolunteers[0].prettyPrint();
+          answer.answer += " OR you can contact " + sortedVolunteers[0].prettyPrint();
         }
 
         callback(answer);
