@@ -6,6 +6,7 @@ var logInteraction = require('./log-interaction');
 var retrieveAnswer = require('./retrieve-answer');
 var mongoose = require('mongoose');
 var app = express();
+var analyzeText = require('./analyze-text');
 
 // Connections depend on environment.
 if ( app.get('env') === 'production' ) {
@@ -42,8 +43,9 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id;
         if (event.message && event.message.text) {
           text = event.message.text;
-          // var topics = analyzeText(text);
+          var topics = analyzeText(text);
           var topics = text.split(' ');
+
           retrieveAnswer(sender, topics, function(answer) {
             if (answer) {
               logInteraction({question: event.message.text, user_id: event.sender.id, answer: answer});
