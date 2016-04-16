@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
+var questions = require('./questions');
 var sendTextMessage = require('./send-text-message');
 var logInteraction = require('./log-interaction');
 var retrieveAnswer = require('./retrieve-answer');
@@ -17,6 +18,9 @@ if ( app.get('env') === 'production' ) {
 
 app.set('port', (process.env.PORT || 5000));
 
+// Jade templating
+app.set('view engine', 'ejs');
+
 // Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -25,8 +29,14 @@ app.use(bodyParser.json());
 
 // Index route
 app.get('/', function (req, res) {
-    res.send('Hello world, I am a chat bot');
+    res.render('new');
 });
+
+app.post("/answer", function(req, res) {
+    console.log(req.body);
+    var model = new questions({question: req.body.hospitalQuestion, answer: req.body.hospitalAnswer});
+    model.save()
+})
 
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
@@ -37,6 +47,7 @@ app.get('/webhook/', function (req, res) {
 });
 
 app.post('/webhook/', function (req, res) {
+    console.log(req.body);
     messaging_events = req.body.entry[0].messaging;
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i];
