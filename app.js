@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
 var sendTextMessage = require('./send-text-message');
+var logInteraction = require('./log-interaction');
 var mongoose = require('mongoose');
 var chatHistory = require('./chat-history');
 var app = express();
@@ -36,17 +37,19 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id;
         if (event.message && event.message.text) {
           text = event.message.text;
-          sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+          var answer = "Text received, echo: " + text.substring(0, 200);
+          sendTextMessage(sender, answer);
+          logInteraction({question: event.message.text, user_id: event.sender.id, answer: answer});
         }
     }
-    res.sendStatus(200)
+    res.sendStatus(200);
 });
 
 // Spin up the server
 app.listen(app.get('port'), function() {
-    console.log('running on port', app.get('port'));
+  console.log('running on port', app.get('port'));
 });
 
 // Testing your database connection.
-var test = new chatHistory({user_id: 1, locale: 'en'})
-test.save();
+// var test = new chatHistory({user_id: 1, locale: 'en'});
+// test.save();
