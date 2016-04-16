@@ -297,11 +297,14 @@
   // Show/Hide volunteer information form.
   $(document).ready(function () {
     $('#volunteer').change(function () {
+console.log('checkbox changed');
       var $form = $('#volunteer-form');
       if ($(this).prop('checked')) {
+console.log('checkbox checked');
         $form.show();
         $form.find('input').prop('required', true);
       } else {
+console.log('checkbox not checked');
         $form.hide();
         $form.find('input').prop('required', false);
       }
