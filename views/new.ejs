@@ -1,15 +1,112 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1>Where is the nearest hospital?</h1>
-    <form name="input" action="/answer" method="post">
-      <input type="hidden" value="Where is the nearest hospital?" name="hospitalQuestion">
-       Answer: <input type="text" name="hospitalAnswer">
-      <input type="submit" value="Submit">
-    </form>
-    <div><a href="/"> Go back to home page </a></div>
-  </body>
+<head>
+  <link rel='stylesheet' href='stylesheets/normalize.css'/>
+  <link rel='stylesheet' href='stylesheets/skeleton.css'/>
+  <link rel='stylesheet' href='stylesheets/answers.css'/>
+  <script src="javascripts/jquery.js"></script>
+</head>
+<body>
+<div class="hero">
+  <div class="container">
+    <h3 class="hero-heading">Thank you for taking the time to answer these questions</h3>
+    <p class="hero-description">Your help is really appreciated</p>
+  </div>
+</div>
+<div class="container">
+  <form name="input" action="/answer" method="post">
+    <div class="row">
+      <label for="type">What kind of contributor are you?</label>
+      <select class="u-full-width" id="type">
+        <option value="ngo">NGO</option>
+        <option value="refugee">Refugee</option>
+        <option value="volunteer">Volunteer</option>
+      </select>
+    </div>
+
+    <!-- Refugee Form -->
+    <div class="specific-form" id="refugee" style="display: none;">
+      <div class="row">
+        <label for="questions[0]">Where do you go to learn the local language?</label>
+        <input type="hidden" value="Where do you go to learn the local language?" name="questions[0][question]">
+        <textarea class="u-full-width" rows="3" id="questions[0]" name="questions[0][answer]"></textarea>
+      </div>
+
+      <div class="row">
+        <label for="questions[1]">What is the best hospital for emergency care?</label>
+        <input type="hidden" value="What is the best hospital for emergency care?" name="questions[1][question]">
+        <textarea class="u-full-width" rows="3" id="questions[1]" name="questions[1][answer]"></textarea>
+      </div>
+
+      <div class="row">
+        <label for="questions[2]">Where do you go to see a doctor if you are sick?</label>
+        <input type="hidden" value="Where do you go to see a doctor if you are sick?" name="questions[2][question]">
+        <textarea class="u-full-width" rows="3" id="questions[2]" name="questions[2][answer]"></textarea>
+      </div>
+
+      <div class="row">
+        <label for="questions[3]">What are the best educational programs for children?</label>
+        <input type="hidden" value="What are the best educational programs for children?" name="questions[3][question]">
+        <textarea class="u-full-width" rows="3" id="questions[3]" name="questions[3][answer]"></textarea>
+      </div>
+
+      <div class="row">
+        <label for="questions[4]">Which organizations can help with residency and immigration support?</label>
+        <input type="hidden" value="Which organizations can help with residency and immigration support?"
+               name="questions[4][question]">
+        <textarea class="u-full-width" rows="3" id="questions[4]" name="questions[4][answer]"></textarea>
+      </div>
+
+      <div class="row">
+        <label for="questions[5]">What is a good restaurant to get Arabic food?</label>
+        <input type="hidden" value="What is a good restaurant to get Arabic food?" name="questions[5][question]">
+        <textarea class="u-full-width" rows="3" id="questions[5]" name="questions[5][answer]"></textarea>
+      </div>
+    </div>
+
+    <label>
+      <input type="checkbox" id="volunteer">
+      <span class="label-body">Would you be willing to offer guidance to incoming refugees who have questions?</span>
+    </label>
+    <div id="volunteer-form" style="display: none;">
+      <div class="row">
+        <label for="volunteer-name">What is your first name?</label>
+        <input type="text" id="volunteer-name" name="volunteer-name"/>
+      </div>
+
+      <div class="row">
+        <label for="volunteer-phone">What is your phone number?</label>
+        <input type="text" id="volunteer-phone" name="volunteer-phone"/>
+      </div>
+    </div>
+
+    <input type="submit" value="Submit" class="button-primary">
+  </form>
+</div>
+
+<script>
+  // Show/Hide specific form questions.
+  $(document).ready(function () {
+    $('#type').change(function () {
+      $('.specific-form').hide();
+      $('#' + $(this).val()).show();
+    });
+  });
+
+  // Show/Hide volunteer information form.
+  $(document).ready(function () {
+    $('#volunteer').change(function () {
+      var $form = $('#volunteer-form');
+      if ($(this).prop('checked')) {
+        $form.show();
+        $form.find('input').prop('required', true);
+      } else {
+        $form.hide();
+        $form.find('input').prop('required', false);
+      }
+    });
+  });
+</script>
+
+</body>
 </html>

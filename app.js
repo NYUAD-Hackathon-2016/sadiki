@@ -2,12 +2,14 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
 var questions = require('./questions');
+var volunteers = require('./volunteers');
 var sendTextMessage = require('./send-text-message');
 var logInteraction = require('./log-interaction');
 var retrieveAnswer = require('./retrieve-answer');
 var mongoose = require('mongoose');
 var app = express();
 var analyzeText = require('./analyze-text');
+var _ = require('underscore');
 
 // Connections depend on environment.
 if ( app.get('env') === 'production' ) {
@@ -18,11 +20,14 @@ if ( app.get('env') === 'production' ) {
 
 app.set('port', (process.env.PORT || 5000));
 
-// Jade templating
+// Ejs templating
 app.set('view engine', 'ejs');
 
+// Serve public assets.
+app.use(express.static(__dirname + '/public'));
+
 // Process application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 
 // Process application/json
 app.use(bodyParser.json());
@@ -32,10 +37,22 @@ app.get('/', function (req, res) {
     res.render('new');
 });
 
-app.post("/answer", function(req, res) {
-    console.log(req.body);
-    var model = new questions({question: req.body.hospitalQuestion, answer: req.body.hospitalAnswer});
-    model.save()
+app.post("/answer", function (req, res) {
+  _.each(req.body.questions, function (question) {
+    if(_.isEmpty(question.answer)) return;
+    
+    new questions({
+      question: question.question,
+      topic: question.question.split(' '),
+      answer: question.answer
+    }).save();
+  });
+
+  if(req.body['volunteer-name'] && req.body['volunteer-phone']) {
+    new volunteers({name: req.body['volunteer-name'], phone: req.body['volunteer-phone']}).save();
+  }
+
+  res.sendStatus(200);
 });
 
 // for Facebook verification
