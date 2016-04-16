@@ -13,7 +13,7 @@ module.exports = function retrieveAnswer(sender, topics, callback) {
         if (err) return;
         questions.findOne({topic: "noanswer"}, function (err, result) {
           if (err) return;
-          callback({answer: result.answer + volunteer.contact_info});
+          callback({answer: result.answer + volunteer.prettyPrint()});
         });
       });
 
@@ -23,7 +23,22 @@ module.exports = function retrieveAnswer(sender, topics, callback) {
       var sortedResults = _.sortBy(results, function (answer) {
         return _.intersection(answer.topic, topics).length;
       });
-      callback(sortedResults[0]);
+
+      var answer = {answer: sortedResults[0].answer};
+
+      volunteers.find({topic: {$in: topics}}, function (err, volunteers) {
+        if (err) return;
+
+        if(results.length > 0) {
+          var sortedVolunteers = _.sortBy(volunteers, function (volunteer) {
+            return _.intersection(volunteer.topic, topics).length;
+          });
+
+          answer.answer += "OR you can contact " + sortedVolunteers[0].prettyPrint();
+        }
+
+        callback(answer);
+      });
 
     }
   });

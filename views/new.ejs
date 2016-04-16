@@ -21,7 +21,7 @@
         <option selected="selected">-- Select One --</option>
         <option value="refugee">Refugee</option>
         <option value="ngo">NGO</option>
-        <option value="volunteer">Volunteer</option>
+        <option value="ngo">Volunteer</option>
       </select>
     </div>
 
@@ -65,7 +65,100 @@
       </div>
     </div>
 
-    <label>
+    <!-- NGO Form -->
+    <div class="specific-form" id="ngo" style="display: none;">
+      <div class="row">
+        <div class="one-half column">
+          <label for="volunteer[name]">Name</label>
+          <input class="u-full-width" type="text" id="volunteer[name]" name="volunteer[name]"/>
+        </div>
+        <div class="one-half column">
+          <label for="volunteer[address]">Address</label>
+          <input class="u-full-width" type="text" id="volunteer[address]" name="volunteer[address]"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="one-half column">
+          <label for="volunteer[phone]">Phone number</label>
+          <input class="u-full-width" type="text" id="volunteer[phone]" name="volunteer[phone]"/>
+        </div>
+        <div class="one-half column">
+          <label for="volunteer[country]">What country are you located in?</label>
+          <input class="u-full-width" type="text" id="volunteer[country]" name="volunteer[country]"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="one-half column">
+          <label for="volunteer[city]">What city are you located in?</label>
+          <input class="u-full-width" type="text" id="volunteer[city]" name="volunteer[city]"/>
+        </div>
+      </div>
+
+      <!-- Topic -->
+      <label for="topic">What services do you offer to refugees? (choose all that apply)</label>
+      <div class="row">
+        <div class="one-third column">
+          <label>
+            <input type="checkbox" name="topic[health]">
+            <span class="label-body">Healthcare</span>
+          </label>
+        </div>
+        <div class="one-third column">
+          <label>
+            <input type="checkbox" name="topic[emergency]">
+            <span class="label-body">Emergency care</span>
+          </label>
+        </div>
+        <div class="one-third column">
+          <label>
+            <input type="checkbox" name="topic[language]">
+            <span class="label-body">Language training</span>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="one-third column">
+          <label>
+            <input type="checkbox" name="topic[legal]">
+            <span class="label-body">Legal support</span>
+          </label>
+        </div>
+        <div class="one-third column">
+          <label>
+            <input type="checkbox" name="topic[immigration]">
+            <span class="label-body">Immigration services</span>
+          </label>
+        </div>
+        <div class="one-third column">
+          <label>
+            <input type="checkbox" name="topic[shelter]">
+            <span class="label-body">Shelter support</span>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="one-third column">
+          <label>
+            <input type="checkbox" name="topic[job]">
+            <span class="label-body">Job training / Employment Support</span>
+          </label>
+        </div>
+        <div class="one-third column">
+          <label>
+            <input type="checkbox" name="topic[foot]">
+            <span class="label-body">Food aid</span>
+          </label>
+        </div>
+        <div class="one-third column">
+          <label>
+            <input type="checkbox" name="topic[culture]">
+            <span class="label-body">Cultural tours/immersion</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <label id="volunteer-container" style="display: none;">
       <input type="checkbox" id="volunteer">
       <span class="label-body">Would you be willing to offer guidance to incoming refugees who have questions?</span>
     </label>
@@ -89,8 +182,14 @@
   // Show/Hide specific form questions.
   $(document).ready(function () {
     $('#type').change(function () {
+      var type = $(this).val();
       $('.specific-form').hide();
-      $('#' + $(this).val()).show();
+      $('#' + type).show();
+      if (type !== 'refugee') {
+        $('#volunteer-container').hide();
+      } else {
+        $('#volunteer-container').show();
+      }
     });
   });
 

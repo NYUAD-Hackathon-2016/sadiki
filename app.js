@@ -40,7 +40,7 @@ app.get('/', function (req, res) {
 app.post("/answer", function (req, res) {
   _.each(req.body.questions, function (question) {
     if(_.isEmpty(question.answer)) return;
-    
+
     new questions({
       question: question.question,
       topic: question.question.split(' '),
@@ -50,6 +50,12 @@ app.post("/answer", function (req, res) {
 
   if(req.body['volunteer-name'] && req.body['volunteer-phone']) {
     new volunteers({name: req.body['volunteer-name'], phone: req.body['volunteer-phone']}).save();
+  }
+
+  if(!_.isEmpty(req.body.volunteer.name)) {
+    var volunteer = req.body.volunteer;
+    volunteer.topic = _.keys(req.body.topic);
+    new volunteers(volunteer).save();
   }
 
   res.sendStatus(200);
