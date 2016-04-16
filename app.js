@@ -41,7 +41,8 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id;
         if (event.message && event.message.text) {
           text = event.message.text;
-          var answer = "Text received, echo: " + text.substring(0, 200);
+          var topics = analyzeText(text);
+          var answer = findAnswer(sender, topics);
           logInteraction({question: event.message.text, user_id: event.sender.id, answer: answer});
           sendTextMessage(sender, answer);
         }
