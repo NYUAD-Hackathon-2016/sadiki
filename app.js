@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var request = require('request');
 var sendTextMessage = require('./send-text-message');
 var logInteraction = require('./log-interaction');
+var retrieveAnswer = require('./retrieve-answer');
 var mongoose = require('mongoose');
 var app = express();
 
@@ -41,10 +42,12 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id;
         if (event.message && event.message.text) {
           text = event.message.text;
-          var topics = analyzeText(text);
-          var answer = findAnswer(sender, topics);
-          logInteraction({question: event.message.text, user_id: event.sender.id, answer: answer});
-          sendTextMessage(sender, answer);
+          // var topics = analyzeText(text);
+          var topics = ['sim-card', 'mobile'];
+          retrieveAnswer(sender, topics, function(answer) {
+            logInteraction({question: event.message.text, user_id: event.sender.id, answer: answer});
+            sendTextMessage(sender, answer);
+          });
         }
     }
     res.sendStatus(200);
