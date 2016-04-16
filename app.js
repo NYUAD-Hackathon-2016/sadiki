@@ -4,11 +4,14 @@ var request = require('request');
 var sendTextMessage = require('./send-text-message');
 var logInteraction = require('./log-interaction');
 var mongoose = require('mongoose');
-var chatHistory = require('./chat-history');
 var app = express();
 
-mongoose.connect('mongodb://localhost/sadiki');
-// mongoose.connect('mongodb://sadiki:sadiki@ds011251.mlab.com:11251/heroku_r5lph6kn');
+// Connections depend on environment.
+if ( app.get('env') === 'production' ) {
+  mongoose.connect('mongodb://sadiki:sadiki@ds011251.mlab.com:11251/heroku_r5lph6kn');
+} else {
+  mongoose.connect('mongodb://localhost/sadiki');
+}
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -39,8 +42,8 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
           text = event.message.text;
           var answer = "Text received, echo: " + text.substring(0, 200);
-          sendTextMessage(sender, answer);
           logInteraction({question: event.message.text, user_id: event.sender.id, answer: answer});
+          sendTextMessage(sender, answer);
         }
     }
     res.sendStatus(200);
@@ -50,7 +53,3 @@ app.post('/webhook/', function (req, res) {
 app.listen(app.get('port'), function() {
   console.log('running on port', app.get('port'));
 });
-
-// Testing your database connection.
-// var test = new chatHistory({user_id: 1, locale: 'en'});
-// test.save();
