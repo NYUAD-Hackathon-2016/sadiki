@@ -46,7 +46,7 @@ app.post('/webhook/', function (req, res) {
           var topics = text.split(' ');
           retrieveAnswer(sender, topics, function(answer) {
             logInteraction({question: event.message.text, user_id: event.sender.id, answer: answer});
-            sendTextMessage(sender, answer, res);
+            sendTextMessage(sender, answer.answer, res);
           });
         }
     }
