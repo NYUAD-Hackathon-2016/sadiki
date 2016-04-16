@@ -259,8 +259,6 @@
       </div>
     </div>
 
-      </div>
-
       <label id="volunteer-container" style="display: none;">
         <input type="checkbox" id="volunteer">
         <span class="label-body">Would you be willing to offer guidance to incoming refugees who have questions?</span>
@@ -288,7 +286,7 @@
       var type = $(this).val();
       $('.specific-form').hide();
       $('#' + type).show();
-      if (type !== 'refugee') {
+      if (type !== 'refugee' && type !== 'volunteer') {
         $('#volunteer-container').hide();
       } else {
         $('#volunteer-container').show();
