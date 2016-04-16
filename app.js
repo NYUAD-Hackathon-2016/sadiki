@@ -36,7 +36,7 @@ app.post("/answer", function(req, res) {
     console.log(req.body);
     var model = new questions({question: req.body.hospitalQuestion, answer: req.body.hospitalAnswer});
     model.save()
-})
+});
 
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
@@ -55,8 +55,6 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
           text = event.message.text;
           var topics = analyzeText(text);
-          var topics = text.split(' ');
-
           retrieveAnswer(sender, topics, function(answer) {
             if (answer) {
               logInteraction({question: event.message.text, user_id: event.sender.id, answer: answer});

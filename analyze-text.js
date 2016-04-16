@@ -1,8 +1,9 @@
-module.exports = function analyzeText(text){
-  var topics =[];
-  if(text.indexOf("salam")> -1)
-  //salam is on the text
-  topics.push("salam");
+module.exports = function analyzeText(text) {
+  var topics = text.split(' ');
+
+  if (text.indexOf("salam") > -1) {
+    topics.push("salam");
+  }
 
   return topics;
 };
