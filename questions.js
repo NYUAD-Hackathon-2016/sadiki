@@ -19,7 +19,7 @@ new model({
 new model({
   locale: 'en',
   question: 'Where can i buy makdoos',
-  topic: ['where', 'buy', 'makdoos', 'food', 'jar'],
+  topic: ['buy', 'makdoos', 'food', 'jar'],
   answer: 'Yousuf street is full of syrian restaurants OR call Rama at 05356789, she makes makdoos every friday'
 }).save();
 
