@@ -37,6 +37,11 @@ app.get('/', function (req, res) {
     res.render('new');
 });
 
+// Thank you route
+app.get('/thank_you', function (req, res) {
+    res.render('thank_you');
+});
+
 app.post("/answer", function (req, res) {
   _.each(req.body.questions, function (question) {
     if(_.isEmpty(question.answer)) return;
