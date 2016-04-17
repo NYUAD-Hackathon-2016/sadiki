@@ -63,7 +63,7 @@ app.post("/answer", function (req, res) {
     new volunteers(volunteer).save();
   }
 
-  res.sendStatus(200);
+  res.redirect('/thank_you');
 });
 
 // for Facebook verification
