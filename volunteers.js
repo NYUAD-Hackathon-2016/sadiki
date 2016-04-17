@@ -14,15 +14,15 @@ var volunteersSchema = mongoose.Schema({
 volunteersSchema.methods.prettyPrint = function () {
   var prettyPrint = '';
 
-  prettyPrint += this.name + ', ';
+  prettyPrint += this.name;
   if (!_.isEmpty(this.address)) {
-    prettyPrint += this.address + ', '
+    prettyPrint += ', ' + this.address
   }
   if (!_.isEmpty(this.city) && !_.isEmpty(this.country)) {
-    prettyPrint += this.city + ', ' + this.country;
+    prettyPrint += ', ' + this.city + ', ' + this.country;
   }
   if (!_.isEmpty(this.phone)) {
-    prettyPrint += this.phone;
+    prettyPrint += ', ' + this.phone;
   }
   prettyPrint += '.';
 
