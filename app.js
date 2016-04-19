@@ -1,99 +1,10 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var request = require('request');
-var questions = require('./questions');
-var volunteers = require('./volunteers');
-var sendTextMessage = require('./send-text-message');
-var logInteraction = require('./log-interaction');
-var retrieveAnswer = require('./retrieve-answer');
-var mongoose = require('mongoose');
-var app = express();
-var analyzeText = require('./analyze-text');
-var _ = require('underscore');
+var app = require('express')();
 
-// Connections depend on environment.
-if ( app.get('env') === 'production' ) {
-  mongoose.connect('mongodb://sadiki:sadiki@ds011251.mlab.com:11251/heroku_r5lph6kn');
-} else {
-  mongoose.connect('mongodb://localhost/sadiki');
-}
-
-app.set('port', (process.env.PORT || 5000));
-
-// Ejs templating
-app.set('view engine', 'ejs');
-
-// Serve public assets.
-app.use(express.static(__dirname + '/public'));
-
-// Process application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({extended: true}));
-
-// Process application/json
-app.use(bodyParser.json());
-
-// Index route
-app.get('/', function (req, res) {
-    res.render('new');
-});
-
-// Thank you route
-app.get('/thank_you', function (req, res) {
-    res.render('thank_you');
-});
-
-app.post("/answer", function (req, res) {
-  _.each(req.body.questions, function (question) {
-    if(_.isEmpty(question.answer)) return;
-
-    new questions({
-      question: question.question,
-      topic: question.question.split(' '),
-      answer: question.answer
-    }).save();
-  });
-
-  if(req.body['volunteer-name'] && req.body['volunteer-phone']) {
-    new volunteers({name: req.body['volunteer-name'], phone: req.body['volunteer-phone']}).save();
-  }
-
-  if(!_.isEmpty(req.body.volunteer.name)) {
-    var volunteer = req.body.volunteer;
-    volunteer.topic = _.keys(req.body.topic);
-    new volunteers(volunteer).save();
-  }
-
-  res.redirect('/thank_you');
-});
-
-// for Facebook verification
-app.get('/webhook/', function (req, res) {
-    if (req.query['hub.verify_token'] === 'sadiki-nyuad-2016') {
-      res.send(req.query['hub.challenge']);
-    }
-    res.send('Error, wrong token')
-});
-
-app.post('/webhook/', function (req, res) {
-    messaging_events = req.body.entry[0].messaging;
-    for (i = 0; i < messaging_events.length; i++) {
-        event = req.body.entry[0].messaging[i];
-        sender = event.sender.id;
-        if (event.message && event.message.text) {
-          text = event.message.text;
-          var topics = analyzeText(text);
-          retrieveAnswer(sender, topics, function(answer) {
-            if (answer) {
-              logInteraction({question: event.message.text, user_id: event.sender.id, answer: answer});
-              sendTextMessage(sender, answer.answer, res);
-            }
-          });
-        }
-    }
-    res.sendStatus(200);
-});
+require('./config/database')(app);
+require('./config/setup')(app);
+require('./config/routes')(app);
 
 // Spin up the server
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), function () {
   console.log('running on port', app.get('port'));
 });

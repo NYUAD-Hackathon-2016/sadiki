@@ -5,7 +5,7 @@ var chatHistorySchema = mongoose.Schema({
   locale: String,
   question: String,
   answer: String,
-  created_at: { type: Date, default: Date.now }
+  created_at: {type: Date, default: Date.now}
 });
 
 module.exports = mongoose.model('ChatHistory', chatHistorySchema);

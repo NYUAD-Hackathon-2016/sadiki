@@ -76,7 +76,7 @@
         <textarea class="u-full-width" rows="3" id="questions[5]" name="questions[5][answer]"></textarea>
       </div>
 
-    <!-- End refugee form -->
+      <!-- End refugee form -->
     </div>
 
     <!-- NGO Form -->
@@ -259,21 +259,21 @@
       </div>
     </div>
 
-      <label id="volunteer-container" style="display: none;">
-        <input type="checkbox" id="guidance">
-        <span class="label-body">Would you be willing to offer guidance to incoming refugees who have questions?</span>
-      </label>
-       <div id="volunteer-form" style="display: none;">
-         <div class="row">
-           <label for="volunteer-name">What is your first name?</label>
-           <input type="text" id="volunteer-name" name="volunteer-name"/>
-         </div>
+    <label id="volunteer-container" style="display: none;">
+      <input type="checkbox" id="guidance">
+      <span class="label-body">Would you be willing to offer guidance to incoming refugees who have questions?</span>
+    </label>
+    <div id="volunteer-form" style="display: none;">
+      <div class="row">
+        <label for="volunteer-name">What is your first name?</label>
+        <input type="text" id="volunteer-name" name="volunteer-name"/>
+      </div>
 
-         <div class="row">
-           <label for="volunteer-phone">What is your phone number?</label>
-           <input type="text" id="volunteer-phone" name="volunteer-phone"/>
-         </div>
-       </div>
+      <div class="row">
+        <label for="volunteer-phone">What is your phone number?</label>
+        <input type="text" id="volunteer-phone" name="volunteer-phone"/>
+      </div>
+    </div>
 
     <input type="submit" value="Submit" class="button-primary">
   </form>
@@ -296,16 +296,16 @@
 
   // Show/Hide volunteer information form.
   $(document).ready(function () {
-console.log('ready');
+    console.log('ready');
     $('#guidance').change(function () {
-console.log('checkbox changed');
+      console.log('checkbox changed');
       var $form = $('#volunteer-form');
       if ($(this).prop('checked')) {
-console.log('checkbox checked');
+        console.log('checkbox checked');
         $form.show();
         $form.find('input').prop('required', true);
       } else {
-console.log('checkbox not checked');
+        console.log('checkbox not checked');
         $form.hide();
         $form.find('input').prop('required', false);
       }

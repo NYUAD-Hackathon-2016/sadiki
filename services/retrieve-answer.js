@@ -1,7 +1,16 @@
-var questions = require('./questions');
-var volunteers = require('./volunteers');
+var questions = require('./../models/questions');
+var volunteers = require('./../models/volunteers');
 var _ = require('underscore');
 
+function bestForTopics(models, topics) {
+  var sorted = _.sortBy(models, function (model) {
+    return _.intersection(model.topic, topics).length;
+  });
+
+  return sorted[0];
+}
+
+// XXX This should be rewritten.
 module.exports = function retrieveAnswer(sender, topics, callback) {
   questions.find({topic: {$in: topics}}, function (err, results) {
     if (err) return;
@@ -19,22 +28,13 @@ module.exports = function retrieveAnswer(sender, topics, callback) {
 
     } else {
 
-      // One or more possible answers were found, sorting them by "matchness".
-      var sortedResults = _.sortBy(results, function (answer) {
-        return _.intersection(answer.topic, topics).length;
-      });
-
-      var answer = {answer: sortedResults[0].answer};
+      var answer = {answer: bestForTopics(results, topics).answer};
 
       volunteers.find({topic: {$in: topics}}, function (err, volunteers) {
         if (err) return;
 
-        if(volunteers.length > 0) {
-          var sortedVolunteers = _.sortBy(volunteers, function (volunteer) {
-            return _.intersection(volunteer.topic, topics).length;
-          });
-
-          answer.answer += " OR you can contact " + sortedVolunteers[0].prettyPrint();
+        if (volunteers.length > 0) {
+          answer.answer += " OR you can contact " + bestForTopics(volunteers, topics).prettyPrint();
         }
 
         callback(answer);
