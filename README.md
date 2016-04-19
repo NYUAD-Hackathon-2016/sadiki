@@ -19,8 +19,8 @@ Base configuration for the app. Database configuration, secrets, routes and basi
 ### controllers
 Each controller is in charge of a set of routes. Controllers should expose a handler (function) for each route they handle.
 
-### controllers
-Each controller is in charge of a set of routes. Controllers should expose a handler (function) for each route they handle.
+### lib
+External libraries and adapters to them. Utility files also go here.
 
 ### models
 Each of mongoose's model gets defined here. Whenever you create a new model, you should add it to the `models/setup.js` file, so that it is accessible throughout the app by doiing `mongoose.model('ModelName')`.
