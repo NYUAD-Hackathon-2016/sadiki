@@ -12,18 +12,20 @@ function challenge(req, res) {
   res.send('Error, wrong token')
 }
 
-function reply(event, res) {
+function reply(event, callback) {
   var sender = event.sender.id;
 
   if (event.message && event.message.text) {
-    var text = event.message.text;
-    var topics = analyzeText(text);
+    var topics = analyzeText(event.message.text);
+
     retrieveAnswer(sender, topics, function (error, answer) {
-      if (error) return res.sendStatus(500);
-      logInteraction({question: event.message.text, user_id: event.sender.id, answer: answer.answer, success: answer.success});
+      if (error) return callback(error);
+
+      logInteraction(event, answer);
       sendTextMessage(sender, answer.answer, function (error, data) {
-        if (error) return res.sendStatus(500);
-        res.send(data);
+        if (error) return callback(error);
+
+        callback(null, data);
       });
     });
   }
@@ -31,10 +33,23 @@ function reply(event, res) {
 }
 
 function receiveMessages(req, res) {
-  var messaging_events = req.body.entry[0].messaging;
-  for (var i = 0; i < messaging_events.length; i++) {
-    reply(messaging_events[i], res);
-  }
+  var messagingEvents = req.body.entry[0].messaging;
+  var data = {errors: [], answers: []};
+
+  _.each(messagingEvents, function (event) {
+    reply(event, function (error, answer) {
+      if (error) {
+        data.errors.push(error);
+      } else {
+        data.answers.push(answer);
+      }
+
+      // Last callback was resolved.
+      if (_.isEqual(data.errors.length + data.answers.length, messagingEvents.length)) {
+        res.send(data);
+      }
+    });
+  });
 }
 
 module.exports = {
