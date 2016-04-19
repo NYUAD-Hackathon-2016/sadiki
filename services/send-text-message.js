@@ -1,5 +1,5 @@
 var request = require('request');
-var token = require('./../config/secrets');
+var accessToken = require('./../config/secrets').accessToken;
 var app = require('express')();
 
 module.exports = function sendTextMessage(sender, text, callback) {
@@ -11,7 +11,7 @@ module.exports = function sendTextMessage(sender, text, callback) {
   if (app.get('env') === 'production') {
     request({
       url: 'https://graph.facebook.com/v2.6/me/messages',
-      qs: {access_token: token},
+      qs: {access_token: accessToken},
       method: 'POST',
       json: payload
     }, function (error, response) {
