@@ -2,6 +2,7 @@ var app = require('express')();
 
 require('./config/database')(app);
 require('./config/setup')(app);
+require('./models/setup');
 require('./config/routes')(app);
 
 // Spin up the server

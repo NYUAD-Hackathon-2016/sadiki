@@ -1,6 +1,7 @@
-var questions = require('./../models/questions');
-var volunteers = require('./../models/volunteers');
 var _ = require('underscore');
+var mongoose = require('mongoose');
+var Question = mongoose.model('Question');
+var Volunteer = mongoose.model('Volunteer');
 
 function bestForTopics(models, topics) {
   var sorted = _.sortBy(models, function (model) {
@@ -12,32 +13,32 @@ function bestForTopics(models, topics) {
 
 // XXX This should be rewritten.
 module.exports = function retrieveAnswer(sender, topics, callback) {
-  questions.find({topic: {$in: topics}}, function (err, results) {
-    if (err) return;
+  Question.where('topic').in(topics).exec(function (err, questions) {
+    if (err) return callback(err);
 
-    if (results.length === 0) {
+    if (questions.length === 0) {
 
       // If no answer was found, put them in contact with a volunteer.
-      volunteers.findOne(function (err, volunteer) {
-        if (err) return;
-        questions.findOne({topic: "noanswer"}, function (err, result) {
-          if (err) return;
-          callback({answer: result.answer + volunteer.prettyPrint()});
+      Volunteer.findOne(function (err, volunteer) {
+        if (err) return callback(err);
+        Question.findOne({topic: 'noanswer'}, function (err, question) {
+          if (err) return callback(err);
+          callback(null, {answer: question.answer + volunteer.prettyPrint(), success: false});
         });
       });
 
     } else {
 
-      var answer = {answer: bestForTopics(results, topics).answer};
+      var answer = {answer: bestForTopics(questions, topics).answer, success: true};
 
-      volunteers.find({topic: {$in: topics}}, function (err, volunteers) {
-        if (err) return;
+      Volunteer.find({topic: {$in: topics}}, function (err, volunteers) {
+        if (err) return callback(err);
 
         if (volunteers.length > 0) {
           answer.answer += " OR you can contact " + bestForTopics(volunteers, topics).prettyPrint();
         }
 
-        callback(answer);
+        callback(null, answer);
       });
 
     }

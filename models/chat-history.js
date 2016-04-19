@@ -5,6 +5,7 @@ var chatHistorySchema = mongoose.Schema({
   locale: String,
   question: String,
   answer: String,
+  success: Boolean,
   created_at: {type: Date, default: Date.now}
 });
 

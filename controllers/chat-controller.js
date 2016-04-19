@@ -4,7 +4,6 @@ var sendTextMessage = require('../services/send-text-message');
 var logInteraction = require('../services/log-interaction');
 var retrieveAnswer = require('../services/retrieve-answer');
 var analyzeText = require('../services/analyze-text');
-var questions = require('../models/questions');
 
 function challenge(req, res) {
   if (req.query['hub.verify_token'] === 'sadiki-nyuad-2016') {
@@ -19,12 +18,11 @@ function reply(event, res) {
   if (event.message && event.message.text) {
     var text = event.message.text;
     var topics = analyzeText(text);
-    retrieveAnswer(sender, topics, function (answer) {
-      logInteraction({question: event.message.text, user_id: event.sender.id, answer: answer});
+    retrieveAnswer(sender, topics, function (error, answer) {
+      if (error) return res.sendStatus(500);
+      logInteraction({question: event.message.text, user_id: event.sender.id, answer: answer.answer, success: answer.success});
       sendTextMessage(sender, answer.answer, function (error, data) {
-        if (error) {
-          res.sendStatus(500);
-        }
+        if (error) return res.sendStatus(500);
         res.send(data);
       });
     });

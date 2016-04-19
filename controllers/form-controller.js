@@ -1,6 +1,6 @@
 var _ = require('underscore');
-var questions = require('../models/questions');
-var volunteers = require('../models/volunteers');
+var questions = require('../models/question');
+var volunteers = require('../models/volunteer');
 
 function newForm(req, res) {
   res.render('new');
